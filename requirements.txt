@@ -2,7 +2,7 @@ streamlit
 yfinance
 pandas
 numpy==1.26.4
-xgboost==1.7.6
+xgboost==2.0.3
 shap
 scikit-learn
 matplotlib
