@@ -43,10 +43,6 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Screenshots
-
-(Add screenshots here)
-
 ## Disclaimer
 
 This project is for educational purposes only and does not constitute financial advice.
