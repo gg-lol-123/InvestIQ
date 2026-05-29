@@ -39,6 +39,12 @@ from recommendation import (
     generate_recommendation
 )
 
+from lstm import (
+    load_lstm_model,
+    predict_lstm,
+    get_lstm_metrics
+)
+
 # ---------------------------------------------------
 # PAGE CONFIG
 # ---------------------------------------------------
@@ -75,6 +81,7 @@ def load_model():
 
 
 model, scaler = load_model()
+lstm_model, lstm_scaler = load_lstm_model()
 
 # ---------------------------------------------------
 # SIDEBAR
@@ -196,6 +203,13 @@ with st.spinner(
         scaler,
         enriched_df
     )
+    lstm_result = predict_lstm(
+    lstm_model,
+    lstm_scaler,
+    enriched_df
+    )
+
+    lstm_metrics = get_lstm_metrics()
 
 # ---------------------------------------------------
 # SHAP
@@ -267,7 +281,7 @@ st.markdown("---")
 # PRICE CHART
 # ---------------------------------------------------
 
-col_chart, col_pred = st.columns([2, 1])
+col_chart, col_xgb, col_lstm = st.columns([2, 1, 1])
 
 with col_chart:
 
@@ -320,7 +334,7 @@ with col_chart:
 # PREDICTION
 # ---------------------------------------------------
 
-with col_pred:
+with col_xgb:
 
     st.subheader(
         "🤖 Prediction"
@@ -356,6 +370,45 @@ with col_pred:
     st.metric(
         "Model Accuracy",
         f"{metrics['accuracy']}%"
+    )
+
+
+with col_lstm:
+
+    st.subheader(
+        "🧠 LSTM"
+    )
+
+    lstm_direction = lstm_result["direction"]
+
+    if lstm_direction == "UP":
+        emoji = "⬆️"
+    else:
+        emoji = "⬇️"
+
+    st.metric(
+        "Direction",
+        f"{emoji} {lstm_direction}"
+    )
+
+    st.metric(
+        "Confidence",
+        f"{lstm_result['confidence']:.1%}"
+    )
+
+    st.metric(
+        "Probability Up",
+        f"{lstm_result['prob_up']:.1%}"
+    )
+
+    st.metric(
+        "Probability Down",
+        f"{lstm_result['prob_down']:.1%}"
+    )
+
+    st.metric(
+        "Model Accuracy",
+        f"{lstm_metrics['accuracy']}%"
     )
 
 st.markdown("---")

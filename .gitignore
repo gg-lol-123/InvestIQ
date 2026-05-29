@@ -3,9 +3,12 @@ __pycache__/
 *.pyo
 *.pyd
 .Python
+
 env/
 venv/
+.venv/
 ENV/
+
 .ipynb_checkpoints/
 
 .streamlit/
